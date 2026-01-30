@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Jadwal Otomatis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root { --primary: #2563eb; --danger: #ef4444; --success: #10b981; --bg: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #1e293b; }
+        .container { max-width: 1600px; margin: auto; }
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 30px; border: 1px solid #e2e8f0; }
+        h2 { margin: 0 0 25px 0; font-size: 24px; color: #0f172a; border-left: 5px solid var(--primary); padding-left: 15px; }
+        .input-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .field { flex: 1; min-width: 150px; display: flex; flex-direction: column; }
+        .field-config { flex: 0 0 180px; }
+        label { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
+        input { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .actions { display: flex; gap: 10px; margin-top: 5px; }
+        .btn { padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; font-size: 13px; transition: 0.2s; }
+        .btn-gen { background: var(--primary); color: #fff; }
+        .btn-gen:hover { background: #1d4ed8; }
+        .btn-exc { background: var(--success); color: #fff; display: none; }
+        .btn-res { background: #f1f5f9; color: #475569; }
+        .table-wrap { margin-top: 30px; overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 10px; display: none; }
+        table { border-collapse: collapse; width: 100%; background: #fff; font-size: 13px; }
+        th { background: #f8fafc; padding: 12px; color: #475569; border: 1px solid #e2e8f0; text-align: center; }
+        td { padding: 10px; border: 1px solid #e2e8f0; text-align: center; font-weight: 600; }
+        .name-sticky { position: sticky; left: 0; background: #fff; font-weight: 800; border-right: 2px solid #e2e8f0; z-index: 2; text-align: left !important; }
+        .cell-x { background: var(--danger); color: #fff; border-radius: 4px; font-weight: 800; display: inline-block; width: 22px; line-height: 22px; }
+        .cell-p { color: #059669; display: inline-block; width: 22px; line-height: 22px; }
+        .cell-s { color: #d97706; display: inline-block; width: 22px; line-height: 22px; }
+        .summary { font-weight: 800; color: var(--danger); background: #fff5f5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Generate Jadwal Otomatis</h2>
+        <form id="scheduleForm">
+            <div class="input-row">
+                <div class="field field-config">
+                    <label>Jumlah Hari</label>
+                    <input type="number" id="custom_days" value="30">
+                </div>
+                <div class="field">
+                    <label>Wajib Masuk (Semua)</label>
+                    <input type="text" id="all_in" placeholder="Contoh: 1, 15, 20">
+                </div>
+            </div>
+            <div class="input-row" id="personnelInputs"></div>
+            <div class="actions">
+                <button type="button" onclick="generateSchedule()" class="btn btn-gen">Generate</button>
+                <button type="button" id="exportBtn" onclick="exportToExcel()" class="btn btn-exc">Ekspor Excel</button>
+                <button type="reset" onclick="resetForm()" class="btn btn-res">Reset</button>
+            </div>
+        </form>
+
+        <div id="resultWrapper" class="table-wrap">
+            <table id="scheduleTable">
+                <thead><tr id="tableHeader"></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    const personnel = { 'P1': 'Vivi', 'P2': 'Hary', 'P3': 'Danang', 'S1': 'Nanda', 'S2': 'Very' };
+
+    function initInputs() {
+        const container = document.getElementById('personnelInputs');
+        Object.entries(personnel).forEach(([key, name]) => {
+            const div = document.createElement('div');
+            div.className = 'field';
+            div.innerHTML = `<label>Libur ${name}</label><input type="text" id="req_${key}" placeholder="Tgl Libur">`;
+            container.appendChild(div);
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('resultWrapper').style.display = 'none';
+        document.getElementById('exportBtn').style.display = 'none';
+    }
+
+    function generateSchedule() {
+        const daysInMonth = parseInt(document.getElementById('custom_days').value) || 30;
+        const allInInput = document.getElementById('all_in').value;
+        const allInDates = allInInput ? allInInput.split(',').map(d => parseInt(d.trim())) : [];
+        const schedule = {};
+        const dailyOffCount = {};
+        for (let d = 1; d <= daysInMonth; d++) dailyOffCount[d] = 0;
+        Object.keys(personnel).forEach(key => {
+            schedule[key] = {};
+            for (let d = 1; d <= daysInMonth; d++) schedule[key][d] = null;
+        });
+        allInDates.forEach(d => {
+            if (d >= 1 && d <= daysInMonth) {
+                schedule['P1'][d] = 1; schedule['P2'][d] = 2; schedule['P3'][d] = 1;
+                schedule['S1'][d] = 1; schedule['S2'][d] = 2;
+            }
+        });
+        Object.keys(personnel).forEach(key => {
+            let offCount = 0;
+            const reqInput = document.getElementById(`req_${key}`).value;
+            const reqDays = reqInput ? reqInput.split(',').map(d => parseInt(d.trim())) : [];
+            reqDays.forEach(rd => {
+                if (rd >= 1 && rd <= daysInMonth && dailyOffCount[rd] < 1 && schedule[key][rd] === null) {
+                    let safe = true;
+                    for (let c = rd - 2; c <= rd + 2; c++) if (schedule[key][c] === 0) safe = false;
+                    if (safe) { schedule[key][rd] = 0; dailyOffCount[rd]++; offCount++; }
+                }
+            });
+            for (let d = 1; d <= daysInMonth; d++) {
+                if (offCount >= 5) break;
+                let workStreak = 0;
+                for (let i = d - 1; workStreak < 6 && i >= 1; i--) {
+                    if (schedule[key][i] !== 0 && schedule[key][i] !== null) workStreak++; else break;
+                }
+                if (workStreak >= 6 && schedule[key][d] === null && dailyOffCount[d] < 1) {
+                    let distSafe = true;
+                    for (let c = d - 2; c <= d + 2; c++) if (schedule[key][c] === 0) distSafe = false;
+                    if (distSafe) { schedule[key][d] = 0; dailyOffCount[d]++; offCount++; }
+                }
+            }
+            let attempts = 0;
+            while (offCount < 5 && attempts < 5000) {
+                let rd = Math.floor(Math.random() * daysInMonth) + 1;
+                attempts++;
+                if (schedule[key][rd] === null && dailyOffCount[rd] < 1) {
+                    let distSafe = true;
+                    for (let c = rd - 2; c <= rd + 2; c++) if (schedule[key][c] === 0) distSafe = false;
+                    if (distSafe) { schedule[key][rd] = 0; dailyOffCount[rd]++; offCount++; }
+                }
+            }
+        });
+        for (let d = 1; d <= daysInMonth; d++) {
+            const p_list = ['P1', 'P2', 'P3'];
+            let p_active = p_list.filter(p => schedule[p][d] !== 0);
+            let a1 = 0, a2 = 0;
+            p_active.forEach(p => { if (d > 1 && schedule[p][d-1] === 2) { schedule[p][d] = 1; a1++; } });
+            p_active.forEach(p => {
+                if (schedule[p][d] === null) {
+                    if (a1 === 0) { schedule[p][d] = 1; a1++; }
+                    else if (a2 === 0) { schedule[p][d] = 2; a2++; }
+                    else {
+                        let v;
+                        if (p === 'P1' && schedule['P2'][d] === 1) v = 2;
+                        else if (p === 'P1' && schedule['P2'][d] === 2) v = 1;
+                        else if (p === 'P2' && schedule['P1'][d] === 1) v = 2;
+                        else if (p === 'P2' && schedule['P1'][d] === 2) v = 1;
+                        else v = (a1 <= a2) ? 1 : 2;
+                        schedule[p][d] = v;
+                        if (v === 1) a1++; else a2++;
+                    }
+                }
+            });
+            if (schedule['S1'][d] !== 0 && schedule['S2'][d] !== 0) {
+                let s1v = (d > 1 && schedule['S1'][d-1] === 2) ? 1 : Math.floor(Math.random() * 2) + 1;
+                schedule['S1'][d] = s1v; schedule['S2'][d] = (s1v === 1) ? 2 : 1;
+            } else if (schedule['S1'][d] === 0) {
+                schedule['S2'][d] = (d > 1 && schedule['S2'][d-1] === 2) ? 1 : Math.floor(Math.random() * 2) + 1;
+            } else if (schedule['S2'][d] === 0) {
+                schedule['S1'][d] = (d > 1 && schedule['S1'][d-1] === 2) ? 1 : Math.floor(Math.random() * 2) + 1;
+            }
+        }
+        renderTable(daysInMonth, schedule);
+        document.getElementById('exportBtn').style.display = 'inline-block';
+    }
+
+    function renderTable(days, schedule) {
+        const header = document.getElementById('tableHeader');
+        const body = document.getElementById('tableBody');
+        header.innerHTML = '<th>Nama</th>';
+        for (let i = 1; i <= days; i++) header.innerHTML += `<th>${i}</th>`;
+        header.innerHTML += '<th>OFF</th>';
+        body.innerHTML = '';
+        Object.entries(personnel).forEach(([key, name]) => {
+            let row = `<tr><td class="name-sticky">${name}</td>`;
+            let offCount = 0;
+            for (let d = 1; d <= days; d++) {
+                let v = schedule[key][d], cls = '', txt = '';
+                if (v === 1) { cls = 'cell-p'; txt = 'P'; }
+                else if (v === 2) { cls = 'cell-s'; txt = 'S'; }
+                else if (v === 0) { cls = 'cell-x'; txt = 'X'; offCount++; }
+                row += `<td><span class="${cls}">${txt}</span></td>`;
+            }
+            row += `<td class="summary">${offCount}</td></tr>`;
+            body.innerHTML += row;
+        });
+        document.getElementById('resultWrapper').style.display = 'block';
+    }
+
+    function exportToExcel() {
+        const table = document.getElementById("scheduleTable");
+        const ws = XLSX.utils.table_to_sheet(table);
+        const days = parseInt(document.getElementById('custom_days').value) || 30;
+        
+        const wscols = [{ wch: 15 }];
+        for (let i = 0; i <= days; i++) wscols.push({ wch: 4 });
+        ws['!cols'] = wscols;
+
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let R = range.s.r; R <= range.e.r; ++R) {
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cell_address = { c: C, r: R };
+                const cell_ref = XLSX.utils.encode_cell(cell_address);
+                if (!ws[cell_ref]) continue;
+
+                if (!ws[cell_ref].s) ws[cell_ref].s = {};
+                
+                ws[cell_ref].s.alignment = { horizontal: "center", vertical: "center" };
+                ws[cell_ref].s.border = {
+                    top: { style: "thin" }, bottom: { style: "thin" },
+                    left: { style: "thin" }, right: { style: "thin" }
+                };
+
+                if (ws[cell_ref].v === 'X') {
+                    ws[cell_ref].s.font = { color: { rgb: "FFFFFF" }, bold: true };
+                    ws[cell_ref].s.fill = { fgColor: { rgb: "EF4444" } };
+                }
+                
+                if (C === 0 && R > 0) ws[cell_ref].s.alignment.horizontal = "left";
+            }
+        }
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Jadwal");
+        XLSX.writeFile(wb, "Jadwal_Otomatis.xlsx");
+    }
+
+    initInputs();
+</script>
+</body>
+</html>
