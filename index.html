@@ -3,111 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisi Jadwal Maret - April 2026</title>
+    <title>Jadwal Simetris Maret - April 2026</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; color: #333; }
-        table { border-collapse: collapse; width: 100%; max-width: 700px; margin-bottom: 30px; table-layout: fixed; }
-        th, td { border: 1px solid #999; text-align: center; padding: 6px; height: 20px; word-wrap: break-word; }
-        
-        /* Pewarnaan */
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            font-size: 13px; 
+            color: #333; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .table-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: fit-content;
+        }
+
+        table { 
+            border-collapse: collapse; 
+            margin-bottom: 25px; 
+            border: 2px solid #444;
+        }
+
+        th, td { 
+            border: 1px solid #999; 
+            text-align: center; 
+            padding: 8px 12px; 
+            min-width: 40px;
+            height: 25px;
+        }
+
+        /* Penyeimbang kolom agar simetris */
+        td:first-child { min-width: 80px; font-weight: bold; background-color: #f0f0f0; }
+
         .bg-grey { background-color: #d9d9d9; font-weight: bold; }
         .bg-yellow { background-color: #ffff00; }
         .bg-orange { background-color: #ffc000; }
         .bg-green { background-color: #92d050; }
         .bg-red { background-color: #ff0000; color: white; }
         
-        /* Layout khusus */
-        .note-container { display: flex; gap: 20px; max-width: 700px; }
-        .box { border: 1px solid #333; background-color: #d9d9d9; padding: 10px; flex: 1; min-height: 120px; }
-        .side-note { text-align: left; padding-left: 15px; border-left: none; }
+        /* Side note yang menempel rapi di kanan */
+        .side-note { 
+            border: none; 
+            text-align: left; 
+            padding-left: 20px; 
+            font-weight: bold; 
+            color: #444;
+            min-width: 150px;
+        }
+
+        .footer-container { 
+            display: flex; 
+            gap: 20px; 
+            width: 100%;
+            justify-content: flex-start;
+            margin-top: 10px;
+        }
+
+        .box { 
+            border: 2px solid #333; 
+            background-color: #d9d9d9; 
+            padding: 15px; 
+            width: 220px; 
+            line-height: 1.6;
+        }
+        
+        .spacer { height: 10px; border: none; }
     </style>
 </head>
 <body>
 
+<div class="table-container">
     <table>
-        <tr class="bg-grey"><td colspan="8">2 Maret – 8 Maret 2026</td></tr>
+        <tr class="bg-grey"><td colspan="8">2 Maret – 8 Maret 2026</td><td class="side-note"></td></tr>
         <tr class="bg-grey">
-            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td class="bg-yellow">Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td>
+            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td class="bg-yellow">Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td><td class="side-note"></td>
         </tr>
         <tr class="bg-grey">
-            <td>Tanggal</td><td>2</td><td>3</td><td>4</td><td class="bg-yellow">5</td><td>6</td><td>7</td><td class="bg-red">8</td>
+            <td>Tanggal</td><td>2</td><td>3</td><td>4</td><td class="bg-yellow">5</td><td>6</td><td>7</td><td class="bg-red">8</td><td class="side-note"></td>
         </tr>
-        <tr><td></td><td></td><td></td><td></td><td class="bg-yellow">Prod</td><td></td><td></td><td></td></tr>
-        <tr><td>Vivi</td><td>S</td><td>S</td><td>P</td><td class="bg-yellow">P</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td></tr>
-        <tr><td>Hary</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-yellow">S</td><td>S</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Danang</td><td>P</td><td>P</td><td class="bg-orange">X</td><td class="bg-yellow">S</td><td>S</td><td>P</td><td class="bg-orange">LA</td></tr>
-        <tr><td>Nanda</td><td>S</td><td>P</td><td>S</td><td class="bg-yellow">P</td><td class="bg-orange">X</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Veri</td><td class="bg-orange">X</td><td>S</td><td>P</td><td class="bg-yellow">S</td><td>P</td><td>P</td><td class="bg-red">S</td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td><td class="bg-yellow">Prod</td><td></td><td></td><td></td><td class="side-note"></td></tr>
+        <tr><td>Vivi</td><td>S</td><td>S</td><td>P</td><td class="bg-yellow">P</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td><td class="side-note"></td></tr>
+        <tr><td>Hary</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-yellow">S</td><td>S</td><td>S</td><td class="bg-red">P</td><td class="side-note"></td></tr>
+        <tr><td>Danang</td><td>P</td><td>P</td><td class="bg-orange">X</td><td class="bg-yellow">S</td><td>S</td><td>P</td><td class="bg-orange">LA</td><td class="side-note">Danang LA 1</td></tr>
+        <tr class="spacer"><td colspan="8"></td><td></td></tr>
+        <tr><td>Nanda</td><td>S</td><td>P</td><td>S</td><td class="bg-yellow">P</td><td class="bg-orange">X</td><td>S</td><td class="bg-red">P</td><td class="side-note"></td></tr>
+        <tr><td>Veri</td><td class="bg-orange">X</td><td>S</td><td>P</td><td class="bg-yellow">S</td><td>P</td><td>P</td><td class="bg-red">S</td><td class="side-note"></td></tr>
     </table>
 
     <table>
-        <tr class="bg-grey"><td colspan="8">9 Maret – 15 Maret 2026</td></tr>
+        <tr class="bg-grey"><td colspan="8">9 Maret – 15 Maret 2026</td><td class="side-note"></td></tr>
         <tr class="bg-grey">
-            <td>Hari</td><td>Sen</td><td class="bg-green">Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td>
+            <td>Hari</td><td>Sen</td><td class="bg-green">Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td><td class="side-note"></td>
         </tr>
         <tr class="bg-grey">
-            <td>Tanggal</td><td>9</td><td class="bg-green">10</td><td>11</td><td>12</td><td>13</td><td>14</td><td class="bg-red">15</td>
+            <td>Tanggal</td><td>9</td><td class="bg-green">10</td><td>11</td><td>12</td><td>13</td><td>14</td><td class="bg-red">15</td><td class="side-note"></td>
         </tr>
-        <tr><td></td><td></td><td class="bg-green">HS</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Vivi</td><td>P</td><td class="bg-green">P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Hary</td><td class="bg-orange">X</td><td class="bg-green">S</td><td>P</td><td class="bg-orange">LA</td><td>S</td><td>P</td><td class="bg-red">S</td></tr>
-        <tr><td>Danang</td><td>S</td><td class="bg-green">S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td></tr>
-        <tr><td>Nanda</td><td>S</td><td class="bg-green">P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Veri</td><td>P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">LA</td></tr>
+        <tr><td>&nbsp;</td><td></td><td class="bg-green">HS</td><td></td><td></td><td></td><td></td><td></td><td class="side-note"></td></tr>
+        <tr><td>Vivi</td><td>P</td><td class="bg-green">P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-red">P</td><td class="side-note"></td></tr>
+        <tr><td>Hary</td><td class="bg-orange">X</td><td class="bg-green">S</td><td>P</td><td class="bg-orange">LA</td><td>S</td><td>P</td><td class="bg-red">S</td><td class="side-note">Hary LA 1</td></tr>
+        <tr><td>Danang</td><td>S</td><td class="bg-green">S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td><td class="side-note"></td></tr>
+        <tr class="spacer"><td colspan="8"></td><td></td></tr>
+        <tr><td>Nanda</td><td>S</td><td class="bg-green">P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td>S</td><td class="bg-red">P</td><td class="side-note"></td></tr>
+        <tr><td>Veri</td><td>P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">LA</td><td class="side-note">Veri LA 1</td></tr>
     </table>
 
     <table>
-        <tr class="bg-grey"><td colspan="8">16 Maret – 22 Maret 2026</td></tr>
+        <tr class="bg-grey"><td colspan="8">16 Maret – 22 Maret 2026</td><td class="side-note"></td></tr>
         <tr class="bg-grey">
-            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td class="bg-yellow">Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td>
+            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td class="bg-yellow">Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td><td class="side-note"></td>
         </tr>
         <tr class="bg-grey">
-            <td>Tanggal</td><td>16</td><td>17</td><td>18</td><td class="bg-yellow">19</td><td>20</td><td>21</td><td class="bg-red">22</td>
+            <td>Tanggal</td><td>16</td><td>17</td><td>18</td><td class="bg-yellow">19</td><td>20</td><td>21</td><td class="bg-red">22</td><td class="side-note"></td>
         </tr>
-        <tr><td></td><td></td><td></td><td></td><td class="bg-yellow">Prod</td><td></td><td></td><td></td></tr>
-        <tr><td>Vivi</td><td>S</td><td>P</td><td>P</td><td class="bg-yellow">P</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td></tr>
-        <tr><td>Hary</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-yellow">S</td><td>P</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Danang</td><td>S</td><td>S</td><td>S</td><td class="bg-yellow">P</td><td>S</td><td>P</td><td class="bg-orange">X</td></tr>
-        <tr><td>Nanda</td><td class="bg-orange">X</td><td>P</td><td class="bg-orange">LA</td><td class="bg-yellow">S</td><td>S</td><td>S</td><td class="bg-red">S</td></tr>
-        <tr><td>Veri</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td class="bg-red">P</td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td><td class="bg-yellow">Prod</td><td></td><td></td><td></td><td class="side-note"></td></tr>
+        <tr><td>Vivi</td><td>S</td><td>P</td><td>P</td><td class="bg-yellow">P</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td><td class="side-note"></td></tr>
+        <tr><td>Hary</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-yellow">S</td><td>S</td><td>P</td><td class="bg-red">P</td><td class="side-note"></td></tr>
+        <tr><td>Danang</td><td>P</td><td>S</td><td>S</td><td class="bg-yellow">P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="side-note"></td></tr>
+        <tr class="spacer"><td colspan="8"></td><td></td></tr>
+        <tr><td>Nanda</td><td class="bg-orange">X</td><td>S</td><td class="bg-orange">LA</td><td class="bg-yellow">S</td><td>S</td><td>S</td><td class="bg-red">P</td><td class="side-note">Nanda LA 1</td></tr>
+        <tr><td>Veri</td><td>S</td><td>P</td><td>P</td><td class="bg-orange">X</td><td>S</td><td>P</td><td class="bg-red">S</td><td class="side-note"></td></tr>
     </table>
 
     <table>
-        <tr class="bg-grey"><td colspan="8">23 Maret – 29 Maret 2026</td></tr>
+        <tr class="bg-grey"><td colspan="8">23 Maret – 29 Maret 2026</td><td class="side-note"></td></tr>
         <tr class="bg-grey">
-            <td>Hari</td><td>Sen</td><td class="bg-green">Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td>
+            <td>Hari</td><td>Sen</td><td class="bg-green">Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td><td class="side-note"></td>
         </tr>
         <tr class="bg-grey">
-            <td>Tanggal</td><td>23</td><td class="bg-green">24</td><td>25</td><td>26</td><td>27</td><td>28</td><td class="bg-red">29</td>
+            <td>Tanggal</td><td>23</td><td class="bg-green">24</td><td>25</td><td>26</td><td>27</td><td>28</td><td class="bg-red">29</td><td class="side-note"></td>
         </tr>
-        <tr><td></td><td></td><td class="bg-green">HS</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Vivi</td><td class="bg-orange">X</td><td class="bg-green">Pend</td><td>S</td><td>P</td><td>S</td><td>P</td><td class="bg-red">P</td></tr>
-        <tr><td>Hary</td><td>S</td><td class="bg-green">S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td></tr>
-        <tr><td>Danang</td><td>S</td><td class="bg-green">P</td><td class="bg-orange">Pend</td><td class="bg-orange">X</td><td>S</td><td>S</td><td class="bg-red">P</td></tr>
-        <tr><td>Nanda</td><td>P</td><td class="bg-green">P</td><td>S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td></tr>
-        <tr><td>Veri</td><td class="bg-orange">X</td><td class="bg-green">S</td><td>P</td><td>S</td><td>P</td><td>S</td><td class="bg-red">S</td></tr>
+        <tr><td>&nbsp;</td><td></td><td class="bg-green">HS</td><td></td><td></td><td></td><td></td><td></td><td class="side-note"></td></tr>
+        <tr><td>Vivi</td><td class="bg-orange">X</td><td class="bg-green">Pend</td><td>S</td><td>P</td><td>S</td><td>P</td><td class="bg-red">P</td><td class="side-note">Vivi Pendingan 1</td></tr>
+        <tr><td>Hary</td><td>P</td><td class="bg-green">S</td><td>P</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="bg-red">S</td><td class="side-note"></td></tr>
+        <tr><td>Danang</td><td>S</td><td class="bg-green">P</td><td class="bg-orange">Pend</td><td class="bg-orange">X</td><td>S</td><td>S</td><td class="bg-red">P</td><td class="side-note">Danang Pendingan 1</td></tr>
+        <tr class="spacer"><td colspan="8"></td><td></td></tr>
+        <tr><td>Nanda</td><td>S</td><td class="bg-green">P</td><td>S</td><td>S</td><td>S</td><td>P</td><td class="bg-orange">X</td><td class="side-note"></td></tr>
+        <tr><td>Veri</td><td>P</td><td class="bg-green">S</td><td>P</td><td>P</td><td class="bg-orange">X</td><td>S</td><td class="bg-red">S</td><td class="side-note"></td></tr>
     </table>
 
     <table>
-        <tr class="bg-grey"><td colspan="8">30 Maret – 5 April 2026</td></tr>
+        <tr class="bg-grey"><td colspan="8">30 Maret – 5 April 2026</td><td class="side-note"></td></tr>
         <tr class="bg-grey">
-            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td>
+            <td>Hari</td><td>Sen</td><td>Sel</td><td>Rab</td><td>Kam</td><td>Jum</td><td>Sab</td><td class="bg-red">Min</td><td class="side-note"></td>
         </tr>
         <tr class="bg-grey">
-            <td>Tanggal</td><td>30</td><td>31</td><td>1</td><td>2</td><td>3</td><td>4</td><td class="bg-red">5</td>
+            <td>Tanggal</td><td>30</td><td>31</td><td>1</td><td>2</td><td>3</td><td>4</td><td class="bg-red">5</td><td class="side-note"></td>
         </tr>
-        <tr><td>Vivi</td><td>S</td><td class="bg-orange">LA</td><td></td><td></td><td></td><td></td><td class="bg-red"></td></tr>
-        <tr><td>Hary</td><td class="bg-orange">Pend</td><td>S</td><td></td><td></td><td></td><td></td><td class="bg-red"></td></tr>
-        <tr><td>Danang</td><td>P</td><td>P</td><td></td><td></td><td></td><td></td><td class="bg-red"></td></tr>
-        <tr><td>Nanda</td><td>S</td><td>P</td><td></td><td></td><td></td><td></td><td class="bg-red"></td></tr>
-        <tr><td>Veri</td><td>P</td><td>S</td><td></td><td></td><td></td><td></td><td class="bg-red"></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="side-note"></td></tr>
+        <tr><td>Vivi</td><td>S</td><td class="bg-orange">LA</td><td></td><td></td><td></td><td></td><td class="bg-red"></td><td class="side-note">Vivi LA 1</td></tr>
+        <tr><td>Hary</td><td class="bg-orange">X</td><td>S</td><td></td><td></td><td></td><td></td><td class="bg-red"></td><td class="side-note"></td></tr>
+        <tr><td>Danang</td><td>P</td><td>P</td><td></td><td></td><td></td><td></td><td class="bg-red"></td><td class="side-note"></td></tr>
+        <tr class="spacer"><td colspan="8"></td><td></td></tr>
+        <tr><td>Nanda</td><td>S</td><td>P</td><td></td><td></td><td></td><td></td><td class="bg-red"></td><td class="side-note"></td></tr>
+        <tr><td>Veri</td><td>P</td><td>S</td><td></td><td></td><td></td><td></td><td class="bg-red"></td><td class="side-note"></td></tr>
     </table>
 
-    <div class="note-container">
+    <div class="footer-container">
         <div class="box">
             <strong>Pendingan :</strong><br>
             Vivi 1<br>
-            Hary 0<br>
+            Hary 1<br>
             Danang 1<br>
             Nanda 1<br>
             Very 2
@@ -120,6 +181,7 @@
             Event 1
         </div>
     </div>
+</div>
 
 </body>
 </html>
